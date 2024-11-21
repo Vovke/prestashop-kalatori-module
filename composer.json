@@ -1,0 +1,31 @@
+{
+  "name": "prestashop/ps_kalatori",
+  "description": "DOT payments module",
+  "homepage": "https://github.com/PrestaShop/ps_kalatori",
+  "license": "AFL-3.0",
+  "authors": [
+    {
+      "name": "Zymologia.fi",
+      "email": "info@zymologia.fi"
+    }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "prestashop/php-dev-tools": "^3.4"
+  },
+  "autoload": {
+    "classmap": [
+      "ps_kalatori.php"
+    ],
+    "exclude-from-classmap": []
+  },
+  "config": {
+    "preferred-install": "dist",
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "prepend-autoloader": false
+  },
+  "type": "prestashop-module"
+}

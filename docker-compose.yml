@@ -1,0 +1,40 @@
+name: kalatori-prestashop-module
+services:
+  prestashop:
+    image: prestashop/prestashop-flashlight:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - PS_DOMAIN=localhost:8888
+      - INIT_SCRIPTS_DIR=/tmp/init-scripts
+    ports:
+      - 8888:80
+    volumes:
+      - ./init-scripts:/tmp/init-scripts:ro
+      - type: bind
+        source: . 
+        target: /var/www/html/modules/ps_kalatori
+    networks:
+      - kalatori-network
+
+  mysql:
+    image: mariadb:lts
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=prestashop
+      - MYSQL_PASSWORD=prestashop
+      - MYSQL_ROOT_PASSWORD=prestashop
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=prestashop
+    networks:
+      - kalatori-network
+
+networks:
+  kalatori-network:
+    external: true
