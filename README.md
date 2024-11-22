@@ -15,10 +15,11 @@ docker network create kalatori-network
 Spawn environment
 
 ```
+cd docker
 docker compose up prestashop --force-recreate
 ```
 
-The module will be installed automatically, yet you will have to configure it. You can access to PrestaShop in your browser:
+The module will be installed automatically, yet you will have to enable and configure it. You can access to PrestaShop in your browser:
 
 - http://localhost:8888
 - http://localhost:8888/admin-dev/ (back office, login: admin@prestashop.com password: prestashop)

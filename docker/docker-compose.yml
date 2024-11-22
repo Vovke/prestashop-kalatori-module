@@ -13,7 +13,7 @@ services:
     volumes:
       - ./init-scripts:/tmp/init-scripts:ro
       - type: bind
-        source: . 
+        source: ../.
         target: /var/www/html/modules/ps_kalatori
     networks:
       - kalatori-network
