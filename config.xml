@@ -6,7 +6,7 @@
     <description><![CDATA[Accept DOT payments by displaying your account details during the checkout.]]></description>
     <author><![CDATA[Alzymologist OY]]></author>
     <tab><![CDATA[payments_gateways]]></tab>
-	<confirmUninstall><![CDATA[Are you sure about removing these details?]]></confirmUninstall>
+    <confirmUninstall><![CDATA[Are you sure about removing these details?]]></confirmUninstall>
     <is_configurable>1</is_configurable>
     <need_instance>1</need_instance>
 </module>

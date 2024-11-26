@@ -2,9 +2,9 @@
 /**
  * @since 1.5.0
  *
- * @property Ps_Kalatori $module
+ * @property Kalatori $module
  */
-class Ps_KalatoriPaymentModuleFrontController extends ModuleFrontController
+class KalatoriPaymentModuleFrontController extends ModuleFrontController
 {
     public $ssl = true;
 
@@ -27,8 +27,8 @@ class Ps_KalatoriPaymentModuleFrontController extends ModuleFrontController
 
         $this->context->smarty->assign([
             'back_url' => $this->context->link->getPageLink('order', true, null, 'step=3'),
-            'confirm_url' => $this->context->link->getModuleLink('ps_kalatori', 'validation', [], true),
-            'image_url' => $this->module->getPathUri() . 'ps_kalatori.jpg',
+            'confirm_url' => $this->context->link->getModuleLink('kalatori', 'validation', [], true),
+            'image_url' => $this->module->getPathUri() . 'kalatori.jpg',
             'cust_currency' => $cart->id_currency,
             'currencies' => $this->module->getCurrency((int) $cart->id_currency),
             'total' => $total,

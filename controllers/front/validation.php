@@ -21,9 +21,9 @@
 /**
  * @since 1.5.0
  *
- * @property Ps_Kalatori $module
+ * @property Kalatori $module
  */
-class Ps_KalatoriValidationModuleFrontController extends ModuleFrontController
+class KalatoriValidationModuleFrontController extends ModuleFrontController
 {
     /**
      * @see FrontController::postProcess()
@@ -46,7 +46,7 @@ class Ps_KalatoriValidationModuleFrontController extends ModuleFrontController
         // Check that this payment option is still available in case the customer changed his address just before the end of the checkout process
         $authorized = false;
         foreach (Module::getPaymentModules() as $module) {
-            if ($module['name'] == 'ps_kalatori') {
+            if ($module['name'] == 'kalatori') {
                 $authorized = true;
                 break;
             }

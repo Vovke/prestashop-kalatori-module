@@ -14,7 +14,7 @@ services:
       - ./init-scripts:/tmp/init-scripts:ro
       - type: bind
         source: ../.
-        target: /var/www/html/modules/ps_kalatori
+        target: /var/www/html/modules/kalatori
     networks:
       - kalatori-network
 

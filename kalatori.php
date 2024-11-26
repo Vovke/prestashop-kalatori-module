@@ -1,29 +1,11 @@
 <?php
-/**
- * 2007-2020 PrestaShop and Contributors
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/AFL-3.0
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2020 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
- * International Registered Trademark & Property of PrestaShop SA
- */
 
 
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
 if (!defined('_PS_VERSION_')) exit;
 
-class Ps_Kalatori extends PaymentModule
+class Kalatori extends PaymentModule
 {
     const FLAG_DISPLAY_PAYMENT_INVITE = 'DOT_PAYMENT_INVITE';
 
@@ -36,35 +18,36 @@ class Ps_Kalatori extends PaymentModule
 
     public function __construct()
     {
-        $this->name = 'ps_kalatori';
+        $this->name = 'kalatori';
         $this->tab = 'payments_gateways';
         $this->version = '1.0.2';
         $this->ps_versions_compliancy = ['min' => '1.7.6.0', 'max' => _PS_VERSION_];
         $this->author = 'Alzymologist Oy';
         $this->controllers = ['ajax', 'payment', 'validation'];
-//        $this->is_eu_compatible = 1;
+        $this->is_eu_compatible = 1;
 
-	$this->DOT_URL_DEFAULT = 'http://localhost:16726';
-	$this->DOT_NAME_DEFAULT = 'PrestaShop';
-	$this->DOT_CURRENCES_DEFAULT = '';
+        $this->DOT_URL_DEFAULT = 'http://localhost:16726';
+        $this->DOT_NAME_DEFAULT = 'PrestaShop';
+        $this->DOT_CURRENCIES_DEFAULT = ''; // TODO: Check if we can remove this
 
         $this->currencies = true;
         $this->currencies_mode = 'checkbox';
 
-	$this->fields_need=['DOT_NAME','DOT_URL', 'DOT_CURRENCES'];
+	    $this->fields_need=['DOT_NAME','DOT_URL', 'DOT_CURRENCIES'];
 
         $config = Configuration::getMultiple($this->fields_need);
-	foreach($this->fields_need as $l) $this->{$l} = ( empty($config[$l]) ? $this->{$l.'_DEFAULT'} : $config[$l] );
+
+        foreach($this->fields_need as $l) $this->{$l} = ( empty($config[$l]) ? $this->{$l.'_DEFAULT'} : $config[$l] );
 
         $this->bootstrap = true;
         parent::__construct();
 
         $this->displayName = $this->trans('Kalatori Web3 Crypto Payments', [], 'Modules.Kalatori.Admin');
-        $this->description = $this->trans('Accept crypto payments using kalatori self hosted crypto payment gateway.', [], 'Modules.Kalatori.Admin');
-        $this->confirmUninstall = $this->trans('Are you sure about removing these details?', [], 'Modules.Kalatori.Admin');
+        $this->description = $this->trans('Accept crypto payments using kalatori self-hosted crypto payment gateway.', [], 'Modules.Kalatori.Admin');
+        $this->confirmUninstall = $this->trans('Are you sure you want to uninstall?', [], 'Modules.Kalatori.Admin');
 
 //        if ((!isset($this->owner) || !isset($this->details) || !isset($this->address)) && $this->active) {
-//            $this->warning = $this->trans('Account oner and account details must be configured before using this module.', [], 'Modules.Kalatori.Admin');
+//            $this->warning = $this->trans('Account owner and account details must be configured before using this module.', [], 'Modules.Kalatori.Admin');
 //        }
 
         if ((!isset($this->daemon)) && $this->active) {
@@ -74,24 +57,23 @@ class Ps_Kalatori extends PaymentModule
         if (!count(Currency::checkPaymentCurrencies($this->id)) && $this->active) {
             $this->warning = $this->trans('No currency has been set for this module.', [], 'Modules.Kalatori.Admin');
         }
-
     }
 
     public function install()
     {
         Configuration::updateValue(self::FLAG_DISPLAY_PAYMENT_INVITE, true);
-        return (!parent::install()
-            || !$this->registerHook('displayPaymentReturn')
-            || !$this->registerHook('paymentOptions')
-	    ? false : true
-	);
+        return parent::install()
+            && $this->registerHook('displayPaymentReturn')
+            && $this->registerHook('paymentOptions');
     }
 
     public function uninstall()
     {
         foreach($this->fields_need as $l) { if( !Configuration::deleteByName($l) ) return false; }
-	if( !Configuration::deleteByName(self::FLAG_DISPLAY_PAYMENT_INVITE) ) return false;
-	if( !parent::uninstall() ) return false;
+	    if( !Configuration::deleteByName(self::FLAG_DISPLAY_PAYMENT_INVITE) ) return false;
+	    if( !parent::uninstall() ) return false;
+
+        // TODO: Check all the fields we add to the configuration and cklan them up
 /*
         if ( !Configuration::deleteByName('DOT_CUSTOM_TEXT')
 //                || !Configuration::deleteByName('DOT_DETAILS')
@@ -200,10 +182,10 @@ class Ps_Kalatori extends PaymentModule
 
         $newOption = new PaymentOption();
         $newOption ->setModuleName($this->name)
-                ->setLogo(_MODULE_DIR_ . '/ps_kalatori/views/img/polkadot.webp')
+                ->setLogo(_MODULE_DIR_ . '/kalatori/views/img/polkadot.webp')
                 ->setCallToActionText($this->trans('Pay by DOT', [], 'Modules.Kalatori.Shop'))
                 ->setAction( $this->context->link->getModuleLink($this->name, 'validation', [], true) )
-                ->setAdditionalInformation($this->fetch('module:ps_kalatori/views/templates/front/dotpay.tpl'))
+                ->setAdditionalInformation($this->fetch('module:kalatori/views/templates/front/dotpay.tpl'))
 /*
 		->setInputs([
             'token' => [
@@ -243,7 +225,7 @@ class Ps_Kalatori extends PaymentModule
             'contact_url' => $this->context->link->getPageLink('contact', true),
         ]);
 
-        return $this->fetch('module:ps_kalatori/views/templates/hook/payment_return.tpl');
+        return $this->fetch('module:kalatori/views/templates/hook/payment_return.tpl');
     }
 
 /*
@@ -283,12 +265,12 @@ class Ps_Kalatori extends PaymentModule
                     ],
 
                     [
-                        'name' => 'DOT_CURRENCES',
-                        'label' => $this->trans('Enabled currences', [], 'Modules.Kalatori.Admin'),
+                        'name' => 'DOT_CURRENCIES',
+                        'label' => $this->trans('Enabled currencies', [], 'Modules.Kalatori.Admin'),
 			'placeholder' => '',
-                        'desc' => $this->trans('Left blank for enable all currences', [], 'Modules.Kalatori.Admin'),
+                        'desc' => $this->trans('Leave blank to enable all available currencies', [], 'Modules.Kalatori.Admin'),
                         'type' => 'text',
-			'id' => 'kalatori_currences',
+			'id' => 'kalatori_currencies',
                         'required' => false,
                     ],
 
@@ -419,7 +401,7 @@ function kalatori_test(e) {
 	    'order_id' => $cart->id,
 	    'shop_id' => $cart->shop_id,
 	    'currency' => $this->context->currency->iso_code,
-	    'currences' => Configuration::get('DOT_CURRENCES'),
+	    'currences' => Configuration::get('DOT_CURRENCIES'),
 	    'name' => Configuration::get('DOT_NAME'),
 //	    'products' => sizeof($cart->'_products:protected'),
 //	    'products' => sizeof($cart->_products),

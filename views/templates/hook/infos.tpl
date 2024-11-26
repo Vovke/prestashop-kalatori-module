@@ -4,8 +4,8 @@ TOP ADMIN PANEL
  *}
 
 <div class="alert alert-info">
-  <img src="../modules/ps_kalatori/logo.png" style="float:left; margin-right:15px;" height="60">
-  <p><strong>{l s="This module allows you to accept secure payments by DOT (Polkadot)." d='Modules.Kalatori.Admin'}</strong></p>
-  <p>{l s="If the client chooses to pay by DOT, the order status will change to 'Waiting for Payment'." d='Modules.Kalatori.Admin'}</p>
-  <p>{l s="The status will be automatically changed when the transaction is completed successfully." d='Modules.Kalatori.Admin'}</p>
+  <img src="../modules/kalatori/logo.png" style="float:left; margin-right:15px;" height="60"> {* TODO: update icon *}
+  <p><strong>{l s="This module allows you to accept crypto payments." d='Modules.Kalatori.Admin'}</strong></p>
+  <p>{l s="{l s="Once the client choose to pay with Kalatori for the order, the status will change to 'Waiting for Payment'." d='Modules.Kalatori.Admin'}" d='Modules.Kalatori.Admin'}</>
+  <p>{l s="{l s="The status will update automatically once the transaction is completed successfully." d='Modules.Kalatori.Admin'}" d='Modules.Kalatori.Admin'}</>
 </div>

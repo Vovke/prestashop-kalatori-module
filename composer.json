@@ -1,23 +1,23 @@
 {
-  "name": "prestashop/ps_kalatori",
+  "name": "kalatori",
   "description": "DOT payments module",
-  "homepage": "https://github.com/PrestaShop/ps_kalatori",
+  "homepage": "https://github.com/Alzymologist/kalatori",
   "license": "AFL-3.0",
   "authors": [
     {
-      "name": "Zymologia.fi",
+      "name": "Alzymologist",
       "email": "info@zymologia.fi"
     }
   ],
   "require": {
-    "php": ">=5.4"
+    "php": ">=5.5"
   },
   "require-dev": {
     "prestashop/php-dev-tools": "^3.4"
   },
   "autoload": {
     "classmap": [
-      "ps_kalatori.php"
+      "kalatori.php"
     ],
     "exclude-from-classmap": []
   },

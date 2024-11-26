@@ -9,13 +9,9 @@
 // никакого ajax_host! эндпоинт называется ajax_url
 
 DOT={
-
-debug: 0, // ТОЛЬКО ДЛЯ ОТЛАДКИ! ПОТОМ УБРАТЬ!
-
-noweb: 0,
-
-daemon: { // тут будет инфо, пришедшая от демона
-    // currency_name: 'DOT',
+	debug: 0, // ТОЛЬКО ДЛЯ ОТЛАДКИ! ПОТОМ УБРАТЬ!
+	noweb: 0,
+	daemon: { // тут будет инфо, пришедшая от демона
 },
 
 test_acc: "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5",
@@ -41,7 +37,7 @@ cx: { // тут будет инфо
 
 // ОБЯЗАТЕЛЬНОЕ:
 //	currency: "USD",
-//	currences: "USDT-L DOT-L"
+//	currencies: "USDT-L DOT-L"
 
 // ОПЦИОНАЛЬНОЕ:
 //	daemon_direct: 0 - флаг обозначающий, напрямую ли должен DOT.js обращаться к демону,
@@ -493,7 +489,7 @@ magento_init: function(cx) {
 
     var p = window.checkoutConfig.payment.kalatorimax;
     if(!p) DOT.error('magento system error #0104');
-    DOT.cx.currences = p.currences;
+    DOT.cx.currencies = p.currencies;
     DOT.cx.mainjs = p.assets_base_url+"/"; // "https://magento.zymologia.fi/static/version1709653373/frontend/Magento/luma/en_US/Alzymologist_KalatoriMax/js"
     DOT.cx.ajax_url = p.store_base_url+"alzymologist/payment/index"; // 'https://magento.zymologia.fi/alzymologist/payment/index'; // window.checkoutConfig.staticBaseUrl
     // DOT.health_url = DOT.cx.ajax_url+"?health=1";
@@ -869,8 +865,8 @@ daemon_get_info: async function() {
     // Setup enpoints
     // DOT.health_url = DOT.cx.ajax_url+'/v2/health'; // нахуй не нужен так-то
 
-    // Get Currences /status
-    console.log("Get Currences /status = "+DOT.cx.status_url);
+    // Get currencies /status
+    console.log("Get currencies /status = "+DOT.cx.status_url);
     try {
 	var j = DOT.AJAX( DOT.cx.status_url );
 	if(j.error) DOT.huemoe();
@@ -881,11 +877,11 @@ daemon_get_info: async function() {
     try {
         if(!j.supported_currencies || 0==Object.keys(j).length) return DOT.error("/status: No currencies");
 
-        if(DOT.cx.currences) { // Оставим только разрешенные
+        if(DOT.cx.currencies) { // Оставим только разрешенные
 	    // возможные:
 	    var m1 = Object.keys(j.supported_currencies);
 	    // разрешенные:
-	    var m2 = DOT.cx.currences.replace(/,/g,' ').split(' ');
+	    var m2 = DOT.cx.currencies.replace(/,/g,' ').split(' ');
 	    // 	подходящие из разрешенных (найти аналоги для USD или EUR типа USDC):
             for(var i in m2) { var x=m2[i]; if(x.substring(0,DOT.cx.currency.length)!=DOT.cx.currency) delete m2[i]; }
 	    // удаляемые
@@ -2512,7 +2508,7 @@ kalatori_donate = async function(ara) { if(!ara) ara={};
     DOT.cx.order_id = ara.order;
     DOT.cx.total = ara.total;
     DOT.cx.currency = (ara.currency?ara.currency:'USD');
-    if(ara.currences) DOT.cx.currences = ara.currences;
+    if(ara.currencies) DOT.cx.currencies = ara.currencies;
 
     DOT.button_on = function(){ }; // DOT.dom('button').style.display='block'; };
     DOT.button_off = function(){ }; // DOT.dom('button').style.display='none'; };

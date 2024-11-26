@@ -2,9 +2,9 @@
 /**
  * @since 1.5.0
  *
- * @property Ps_Kalatori $module
+ * @property Kalatori $module
  */
-class Ps_KalatoriAjaxModuleFrontController extends ModuleFrontController
+class KalatoriAjaxModuleFrontController extends ModuleFrontController
 {
     public $ssl = true;
 
@@ -37,7 +37,7 @@ class Ps_KalatoriAjaxModuleFrontController extends ModuleFrontController
 
     // Check that this payment option is still available in case the customer changed his address just before the end of the checkout process
     $authorized=false; foreach( Module::getPaymentModules() as $module ) {
-        if($module['name'] == 'ps_kalatori') { $authorized=true; break; }
+        if($module['name'] == 'kalatori') { $authorized=true; break; }
     } if( !$authorized ) $this->ejdie('This payment method is not available.');
 
     $customer = $cart->id_customer;
@@ -54,10 +54,10 @@ class Ps_KalatoriAjaxModuleFrontController extends ModuleFrontController
     $currency = $input['currency'];
 
         // Проверяем, разрешен ли
-        $currences = Configuration::get('DOT_CURRENCES');
-        if(!empty($currences)) {
-            $currences = str_replace(',',' ',$currences);
-            $C = ( strpos($currences,' ')<0 ? array($currences) : explode(' ',$currences) );
+        $currencies = Configuration::get('DOT_CURRENCIES');
+        if(!empty($currencies)) {
+            $currencies = str_replace(',',' ',$currencies);
+            $C = ( strpos($currencies,' ')<0 ? array($currencies) : explode(' ',$currencies) );
             foreach($C as $n=>$c) $C[$n] = trim($c);
             if(!in_array($currency,$C)) $this->ejdie('Currency not in list');
         }

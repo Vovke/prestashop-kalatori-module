@@ -21,7 +21,7 @@
 	    shop_id:	 "{$shop_id nofilter}",
 	    // products:	 "{$products nofilter}",
 	    currency:	 "{$currency nofilter}",
-	    currences:	 "{$currences nofilter}",
+	    currencies:	 "{$currencies nofilter}",
 	    name:	 "{$name nofilter}",
 	});
     };
