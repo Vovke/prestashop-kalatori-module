@@ -46,10 +46,6 @@ class Kalatori extends PaymentModule
         $this->description = $this->trans('Accept crypto payments using kalatori self-hosted crypto payment gateway.', [], 'Modules.Kalatori.Admin');
         $this->confirmUninstall = $this->trans('Are you sure you want to uninstall?', [], 'Modules.Kalatori.Admin');
 
-//        if ((!isset($this->owner) || !isset($this->details) || !isset($this->address)) && $this->active) {
-//            $this->warning = $this->trans('Account owner and account details must be configured before using this module.', [], 'Modules.Kalatori.Admin');
-//        }
-
         if ((!isset($this->daemon)) && $this->active) {
             $this->warning = $this->trans('Daemon must be configured before using this module.', [], 'Modules.Kalatori.Admin');
         }
@@ -74,17 +70,6 @@ class Kalatori extends PaymentModule
 	    if( !parent::uninstall() ) return false;
 
         // TODO: Check all the fields we add to the configuration and cklan them up
-/*
-        if ( !Configuration::deleteByName('DOT_CUSTOM_TEXT')
-//                || !Configuration::deleteByName('DOT_DETAILS')
-                || !Configuration::deleteByName('DOT_DAEMON')
-//                || !Configuration::deleteByName('DOT_ADDRESS')
-//                || !Configuration::deleteByName('DOT_RESERVATION_DAYS')
-                || !Configuration::deleteByName(self::FLAG_DISPLAY_PAYMENT_INVITE)
-                || !parent::uninstall()) {
-            return false;
-        }
-*/
         return true;
     }
 
@@ -176,14 +161,14 @@ class Kalatori extends PaymentModule
             $orderPayment = $order->getOrderPaymentCollection()->getFirst();
             $transaction = $orderPayment->transaction_id;
 	    die("<pre>".print_r($order,1));
-        } else 
+        } else
 */
 // die("NOT");
 
         $newOption = new PaymentOption();
         $newOption ->setModuleName($this->name)
                 ->setLogo(_MODULE_DIR_ . '/kalatori/views/img/polkadot.webp')
-                ->setCallToActionText($this->trans('Pay by DOT', [], 'Modules.Kalatori.Shop'))
+                ->setCallToActionText($this->trans('Pay with Crypto', [], 'Modules.Kalatori.Shop'))
                 ->setAction( $this->context->link->getModuleLink($this->name, 'validation', [], true) )
                 ->setAdditionalInformation($this->fetch('module:kalatori/views/templates/front/dotpay.tpl'))
 /*
@@ -282,7 +267,7 @@ class Kalatori extends PaymentModule
 "<script>
 
 function kalatori_pin(e) { e = e.innerHTML;
-    var o={}, w = document.querySelector('#kalatori_currences');
+    var o={}, w = document.querySelector('#kalatori_currencies');
     var s = w.value.replace(/,/g,' ').split(' ');
     for(var i of s) { if(i!='') o[i]=1; }
     if(o[e]) delete o[e]; else o[e]=1;
@@ -314,11 +299,11 @@ function kalatori_test(e) {
 		    var curs = '';
 		    for(var x in j.supported_currencies) curs+=' <button onclick=\"return kalatori_pin(this)\">'+hh(x)+'</button>';
     		    s = '<div style=\"color:green\">Daemon is avaliable: '+url+'</div>'
-		    + '<div>currences:'+curs+'</div>'
+		    + '<div>currencies:'+curs+'</div>'
 		    + '<div>version: '+hh(j.server_info.version)+'</div>'
 		    + '<div>remark: '+hh(j.server_info.kalatori_remark)+'</div>';
 
-		    var w = document.querySelector('#kalatori_currences');
+		    var w = document.querySelector('#kalatori_currencies');
 		    if(w.value=='') w.value = Object.keys(j.supported_currencies).join(' ');
 		}
 	    } catch(er){}
@@ -401,7 +386,7 @@ function kalatori_test(e) {
 	    'order_id' => $cart->id,
 	    'shop_id' => $cart->shop_id,
 	    'currency' => $this->context->currency->iso_code,
-	    'currences' => Configuration::get('DOT_CURRENCIES'),
+	    'currencies' => Configuration::get('DOT_CURRENCIES'),
 	    'name' => Configuration::get('DOT_NAME'),
 //	    'products' => sizeof($cart->'_products:protected'),
 //	    'products' => sizeof($cart->_products),
